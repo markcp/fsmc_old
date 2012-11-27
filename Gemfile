@@ -1,21 +1,26 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.9'
-gem 'jquery-rails', '~> 2.1.3'
+gem 'jquery-rails'
 
 group :development, :test do
   gem 'sqlite3'
-  gem 'rspec-rails', '~> 2.11.4'
+  gem 'rspec-rails'
+  gem 'guard-rspec'
+  gem 'terminal-notifier-guard'
+  gem 'guard-spork'
+  gem 'spork'
 end
 
 group :assets do
-  gem 'sass-rails', '~> 3.2.5'
-  gem 'coffee-rails', '~> 3.2.2'
-  gem 'uglifier', '~> 1.3.0'
+  gem 'sass-rails'
+  gem 'coffee-rails'
+  gem 'uglifier'
 end
 
 group :test do
-  gem 'capybara', '~> 1.1.2'
+  gem 'capybara'
+  gem 'rb-fsevent', require: false
 end
 
 group :production do
