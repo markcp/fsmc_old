@@ -13,7 +13,7 @@ guard 'spork', :rspec_env => { 'RAILS_ENV' => 'test' } do
   watch('spec/support/')
 end
 
-guard 'rspec', all_after_pass: false do
+guard 'rspec', all_after_pass: false, cli: '--drb' do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }
@@ -27,8 +27,10 @@ guard 'rspec', all_after_pass: false do
   watch('app/controllers/application_controller.rb')  { "spec/controllers" }
 
   # Capybara request specs
-  watch(%r{^app/views/(.+)/})          { |m| ["spec/features/#{m[1]}_spec.rb", (m[1][/_pages/] ? "spec/features/#{m[1]}_spec.rb" : "spec/features/#{m[1].singularize}_pages_spec.rb")] }
-
+  watch(%r{^app/views/(.+)/}) do |m|
+    (m[1][/_pages/] ? "spec/requests/#{m[1]}_spec.rb" :
+                       "spec/requests/#{m[1].singularize}_pages_spec.rb")
+  end
   # Turnip features and steps
   watch(%r{^spec/acceptance/(.+)\.feature$})
   watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$})   { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'spec/acceptance' }
