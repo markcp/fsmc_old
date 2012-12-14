@@ -43,6 +43,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
+  font-family: lucida console;
   font-size: 3em;
   letter-spacing: -2px;
   margin-bottom: 30px;
@@ -61,6 +62,7 @@ h2 {
 p {
   font-size: 1.1em;
   line-height: 1.7em;
+  margin-top: 10px;
 }
 
 /* forms */
@@ -90,22 +92,37 @@ input {
   @extend .error;
  }
 
+ .check-box-label {
+  display: inline;
+ }
+
+ .checkbox {
+  margin-bottom: 10px;
+ }
+
+ .btn {
+  display: block;
+ }
+
 /* header */
 
-#logo {
-  float: left;
-  margin-right: 10px;
-  font-size: 1.7em;
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: -1px;
-  padding-top: 9px;
-  font-weight: bold;
-  line-height: 1;
-  &:hover {
-    color: #fff;
+header {
+  padding: 0 50px 0 50px;
+  #title-link {
+    color: $black;
     text-decoration: none;
   }
+  h1 {
+    font-family: lucida console;
+    text-align: left;
+  }
+  li {
+    list-style-type: none;
+  }
+}
+
+#authenticate {
+  float: right;
 }
 
 /* sidebar */

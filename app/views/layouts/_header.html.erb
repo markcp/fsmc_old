@@ -1,12 +1,12 @@
-<header class="navbar navbar-fixed-top navbar-inverse">
-  <div class="navbar-inner">
-    <div class="container">
-      <%= link_to "Skandies", '#', id: "logo" %>
-      <nav>
-        <ul class="nav pull-right">
-          <li><%= link_to "Home", root_path %></li>
-        </ul>
-      </nav>
-    </div>
+<header>
+  <div id="authenticate">
+    <ul>
+      <% if signed_in? %>
+        <li><%= link_to "Sign out", signout_path, method: "delete" %></li>
+      <% else %>
+        <li><%= link_to "Sign in", signin_path %></li>
+      <% end %>
+    </ul>
   </div>
+  <a href="/" id="title-link"><h1>Skandies</h1></a>
 </header>

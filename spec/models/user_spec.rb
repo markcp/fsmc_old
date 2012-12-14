@@ -22,7 +22,8 @@ describe User do
   it { should respond_to(:email) }
   it { should respond_to(:password_digest) }
   it { should respond_to(:password) }
-  it { should respond_to(:password_confirmation)}
+  it { should respond_to(:password_confirmation) }
+  it { should respond_to(:remember_token) }
   it { should respond_to(:authenticate) }
 
   it { should be_valid }
@@ -71,5 +72,22 @@ describe User do
   describe "with a password that's too short" do
     before { @user.password = @user.password_confirmation = "a" * 5 }
     it { should be_invalid }
+  end
+
+  describe "remember token" do
+    before { @user.save }
+    its(:remember_token) { should_not be_blank }
+  end
+
+  describe "#send_password_reset" do
+    let(:user) { FactoryGirl.create(:user) }
+    it "generates a unique password_reset_token" do
+      user.send_password_reset
+      last_token = user.password_reset_token
+      user.send_password_reset
+      expect(user.password_reset_token).not_to eq(last_token)
+      expect(user.reload.password_reset_sent_at).to be_present
+      expect(last_email.to).to include(user.email)
+    end
   end
 end

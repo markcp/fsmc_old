@@ -32,7 +32,7 @@ describe "Static Pages" do
     visit root_path
     click_link "About"
     body.should have_selector 'title', text: full_title('About')
-    click_link "Home"
+    click_link "Skandies"
     body.should have_selector 'title', text: full_title('')
   end
 
