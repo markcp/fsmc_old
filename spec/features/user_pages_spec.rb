@@ -5,15 +5,41 @@ describe "User pages" do
   subject { body }
 
   describe "signup page" do
-    before { visit signup_path }
+    describe "for non-signed-in users" do:w
 
-    it { should have_selector('h1',    text: 'Sign up') }
-    it { should have_selector('title', text: full_title('Sign up')) }
+      before { visit signup_path }
+
+      it { should have_selector('title', text: 'Sign in') }
+    end
+
+    describe "for non-admin user" do
+      before do
+        user = FactoryGirl.create(:user)
+        sign_in user
+        visit signup_path
+      end
+
+      it { should have_selector('title', text: 'Sign in') }
+    end
+
+    describe "for admin user" do
+      before do
+        user = FactoryGirl.create(:admin)
+        sign_in user
+        visit signup_path
+      end
+
+      it { should have_selector('h1',    text: 'Sign up') }
+      it { should have_selector('title', text: full_title('Sign up')) }
+    end
   end
 
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
-    before { visit user_path(user) }
+    before do
+      sign_in user
+      visit user_path(user)
+    end
 
     it { should have_selector('h1',    text: user.name) }
     it { should have_selector('title', text: user.name) }
@@ -21,7 +47,11 @@ describe "User pages" do
 
   describe "signup" do
 
-    before { visit signup_path }
+    before do
+      user = FactoryGirl.create(:admin)
+      sign_in user
+      visit signup_path
+    end
 
     let(:submit) { "Create my account" }
 
@@ -52,10 +82,11 @@ describe "User pages" do
       end
 
       describe "after saving the user" do
-        before { click_button submit }
-        let(:user) { User.find_by_email('user@example.com') }
+        before do
+          click_button submit
+        end
 
-        it { should have_selector('title', text: user.name) }
+        it { should have_selector('title', text: 'Skandies') }
         it { should have_selector('div.alert.alert-success', text: 'Success!') }
       end
     end

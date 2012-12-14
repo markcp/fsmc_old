@@ -24,9 +24,20 @@ describe User do
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:remember_token) }
+  it { should respond_to(:admin) }
   it { should respond_to(:authenticate) }
 
   it { should be_valid }
+  it { should_not be_admin }
+
+  describe "with admin attribute set to 'true'" do
+    before do
+      @user.save!
+      @user.toggle!(:admin)
+    end
+
+    it { should be_admin }
+  end
 
   describe "when name is not present" do
     before { @user.name = " " }
@@ -88,6 +99,16 @@ describe User do
       expect(user.password_reset_token).not_to eq(last_token)
       expect(user.reload.password_reset_sent_at).to be_present
       expect(last_email.to).to include(user.email)
+    end
+
+    it "saves the time the password reset was sent" do
+      user.send_password_reset
+      user.reload.password_reset_sent_at.should be_present
+    end
+
+    it "delivers email to user" do
+      user.send_password_reset
+      last_email.to.should include(user.email)
     end
   end
 end

@@ -28,7 +28,7 @@ describe "Authentication" do
     end
 
     describe "with valid information" do
-      before { valid_signin(user) }
+      before { sign_in(user) }
 
       it { should have_selector('title', text: user.name) }
       it { should have_link('Sign out', href: signout_path) }
@@ -38,6 +38,32 @@ describe "Authentication" do
         before { click_link "Sign out" }
         it { should have_link('Sign in') }
       end
+    end
+  end
+
+  describe "authorization" do
+
+    describe "for non-signed-in users" do
+      let(:user) { FactoryGirl.create(:user) }
+
+      describe "in the Users controller" do
+
+        describe "visiting the show page" do
+          before { visit user_path(user) }
+          it { should have_selector('title', text: 'Sign in') }
+        end
+      end
+    end
+  end
+
+  describe "as wrong user" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com") }
+    before { sign_in user }
+
+    describe "visiting Users#show page" do
+      before { visit user_path(wrong_user) }
+      it { should_not have_selector('title', text: user.name) }
     end
   end
 end
