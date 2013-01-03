@@ -1,8 +1,23 @@
 Skandies::Application.routes.draw do
 
+  get "movies/index"
+
+  get "movies/show"
+
+  get "movies/new"
+
+  get "movies/create"
+
+  get "movies/edit"
+
+  get "movies/update"
+
+  get "movies/destroy"
+
   resources :users
   resources :sessions, only: [ :new, :create, :destroy ]
   resources :password_resets
+  resources :movies
 
   root to: 'static_pages#home'
 

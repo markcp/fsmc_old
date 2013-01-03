@@ -5,7 +5,7 @@ describe "User pages" do
   subject { body }
 
   describe "signup page" do
-    describe "for non-signed-in users" do:w
+    describe "for non-signed-in users" do
 
       before { visit signup_path }
 
@@ -71,7 +71,8 @@ describe "User pages" do
 
     describe "with valid information" do
       before do
-        fill_in "Name",         with: "Example User"
+        fill_in "First name",   with: "Example"
+        fill_in "Last name",    with: "Name"
         fill_in "Email",        with: "user@example.com"
         fill_in "Password",     with: "foobar"
         fill_in "Confirmation", with: "foobar"

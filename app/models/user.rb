@@ -10,12 +10,12 @@
 #
 
 class User < ActiveRecord::Base
-  attr_accessible :email, :name, :password, :password_confirmation
+  attr_accessible :email, :first_name, :last_name, :password, :password_confirmation
   has_secure_password
 
   before_create { generate_token(:remember_token) }
 
-  validates :name, presence: true
+  validates :last_name, presence: true
   validates :email, presence: true
   validates :password, length: { minimum: 6 }, on: :create
   validates :password_confirmation, presence: true, on: :create
@@ -31,5 +31,9 @@ class User < ActiveRecord::Base
     begin
       self[column] = SecureRandom.urlsafe_base64
     end while User.exists?(column => self[column])
+  end
+
+  def name
+    self.first_name ? self.first_name + " " + self.last_name : self.last_name
   end
 end

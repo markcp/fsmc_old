@@ -30,7 +30,7 @@ describe "password resets" do
     it { should have_content("Email sent") }
 
     it "should not send an email" do
-      expect(last_email).should be_nil
+      expect(last_email).to be_nil
     end
   end
 

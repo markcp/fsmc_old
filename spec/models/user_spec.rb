@@ -13,12 +13,13 @@ require 'spec_helper'
 
 describe User do
 
-  before { @user = User.new(name: "Example User", email: "user@example.com",
+  before { @user = User.new(first_name: "Example", last_name: " User", email: "user@example.com",
                             password: "foobar", password_confirmation: "foobar") }
 
   subject { @user }
 
-  it { should respond_to(:name) }
+  it { should respond_to(:first_name) }
+  it { should respond_to(:last_name) }
   it { should respond_to(:email) }
   it { should respond_to(:password_digest) }
   it { should respond_to(:password) }
@@ -39,8 +40,8 @@ describe User do
     it { should be_admin }
   end
 
-  describe "when name is not present" do
-    before { @user.name = " " }
+  describe "when last name is not present" do
+    before { @user.last_name = " " }
     it { should_not be_valid }
   end
 
@@ -62,6 +63,25 @@ describe User do
   describe "when password confirmation is nil" do
     before { @user.password_confirmation = nil }
     it { should_not be_valid }
+  end
+
+  describe "name computation" do
+
+    describe "when first and last name present" do
+      before do
+        @user.first_name = "Example"
+        @user.last_name = "User"
+      end
+      specify { @user.name.should == "Example User" }
+    end
+
+    describe "when only last name present" do
+      before do
+        @user.first_name = nil
+        @user.last_name = "Example"
+      end
+      specify { @user.name.should == "Example" }
+    end
   end
 
   describe "return value of authenticate method" do
