@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Skandies::Application.load_tasks
+Care::Application.load_tasks

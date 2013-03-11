@@ -1,18 +1,4 @@
-Skandies::Application.routes.draw do
-
-  get "movies/index"
-
-  get "movies/show"
-
-  get "movies/new"
-
-  get "movies/create"
-
-  get "movies/edit"
-
-  get "movies/update"
-
-  get "movies/destroy"
+Fsmc::Application.routes.draw do
 
   resources :users
   resources :sessions, only: [ :new, :create, :destroy ]
@@ -21,7 +7,6 @@ Skandies::Application.routes.draw do
 
   root to: 'static_pages#home'
 
-  match '/signup', to: 'users#new'
   match '/signin', to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete
 

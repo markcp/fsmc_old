@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for(@movie) do |f| %>
+      <%= render 'shared/error_message' %>
+
+      <%= f.label :title %>
+      <%= f.text_field :title %>
+
+      <%= f.label :year_id %>
+      <%= f.select :year_id, Year.all %>
+
+      <%= f.label :director_display %>
+      <%= f.text_field :director_display %>
+
+      <%= f.label :screenwriter_display %>
+      <%= f.text_field :screenwriter_display %>
+
+      <%= f.submit "Create movie", class: "btn" %>
+    <% end %>
+  </div>
+</div>
