@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Care::Application.load_tasks
+Fsmc::Application.load_tasks

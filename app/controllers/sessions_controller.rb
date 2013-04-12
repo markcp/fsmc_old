@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
     user = User.first
     if user && user.authenticate(params[:session][:password])
       sign_in user
-      redirect_to root_path, notice: "Signed in!"
+      redirect_to new_viewing_path, notice: "Signed in!"
     else
       flash.now[:error] = 'Invalid password'
       render 'new'

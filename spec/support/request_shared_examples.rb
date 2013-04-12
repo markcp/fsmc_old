@@ -3,28 +3,19 @@ shared_examples "accessible by admin" do |url|
 
   subject { body }
 
-  describe "unauthenticated user redirects to signin page" do
+  describe "unauthenticated user redirects to home page" do
     before do
       visit url_path
     end
-    it { should have_selector('title', text: 'Sign in') }
+    it { should have_title('Fireman Save My Child') }
   end
 
-  describe "unauthorized user redirects to signin page" do
+  describe "authorized user displays page" do
     before do
       user = FactoryGirl.create(:user)
       sign_in(user)
       visit url_path
     end
-    it { should have_selector('title', text: 'Sign in') }
-  end
-
-  describe "authorized user displays page" do
-    before do
-      user = FactoryGirl.create(:admin)
-      sign_in(user)
-      visit url_path
-    end
-    it { should_not have_selector('title', text: 'Sign in') }
+    it { should_not have_title('Sign in') }
   end
 end

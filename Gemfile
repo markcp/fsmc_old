@@ -5,6 +5,7 @@ gem 'jquery-rails'
 gem 'sass-rails'
 gem 'bootstrap-sass'
 gem 'simple_form'
+gem 'bcrypt-ruby'
 
 group :development, :test do
   gem 'sqlite3'

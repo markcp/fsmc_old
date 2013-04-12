@@ -2,27 +2,25 @@
 #
 # Table name: users
 #
-#  id         :integer          not null, primary key
-#  name       :string(255)
-#  email      :string(255)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id              :integer          not null, primary key
+#  name            :string(255)
+#  password_digest :string(255)
+#  remember_token  :string(255)
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
 #
 
 require 'spec_helper'
 
 describe User do
 
-  before { @user = User.new(name: "Garfield", email: "user@example.com",
-                            password: "foobar", password_confirmation: "foobar") }
+  before { @user = User.new(name: "Garfield", password: "foobar") }
 
   subject { @user }
 
   it { should respond_to(:name) }
-  it { should respond_to(:email) }
   it { should respond_to(:password_digest) }
   it { should respond_to(:password) }
-  it { should respond_to(:password_confirmation) }
   it { should respond_to(:remember_token) }
   it { should respond_to(:authenticate) }
 
@@ -33,29 +31,14 @@ describe User do
     it { should_not be_valid }
   end
 
-  describe "when email is not present" do
-    before { @user.email = " " }
-    it { should_not be_valid }
-  end
-
   describe "when password is not present" do
-    before { @user.password = @user.password_confirmation = "" }
-    it { should_not be_valid }
-  end
-
-  describe "when password doesn't match confirmation" do
-    before { @user.password_confirmation = "mismatch" }
-    it { should_not be_valid }
-  end
-
-  describe "when password confirmation is nil" do
-    before { @user.password_confirmation = nil }
+    before { @user.password = "" }
     it { should_not be_valid }
   end
 
   describe "return value of authenticate method" do
     before { @user.save }
-    let(:found_user) { User.find_by_email(@user.email) }
+    let(:found_user) { User.find_by_name(@user.name) }
 
     describe "with valid password" do
       it { should == found_user.authenticate(@user.password) }
@@ -69,35 +52,8 @@ describe User do
     end
   end
 
-  describe "with a password that's too short" do
-    before { @user.password = @user.password_confirmation = "a" * 5 }
-    it { should be_invalid }
-  end
-
   describe "remember token" do
     before { @user.save }
     its(:remember_token) { should_not be_blank }
-  end
-
-  describe "#send_password_reset" do
-    let(:user) { FactoryGirl.create(:user) }
-    it "generates a unique password_reset_token" do
-      user.send_password_reset
-      last_token = user.password_reset_token
-      user.send_password_reset
-      expect(user.password_reset_token).not_to eq(last_token)
-      expect(user.reload.password_reset_sent_at).to be_present
-      expect(last_email.to).to include(user.email)
-    end
-
-    it "saves the time the password reset was sent" do
-      user.send_password_reset
-      user.reload.password_reset_sent_at.should be_present
-    end
-
-    it "delivers email to user" do
-      user.send_password_reset
-      last_email.to.should include(user.email)
-    end
   end
 end
